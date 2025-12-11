@@ -3,12 +3,13 @@ import {
   Send, 
   User, 
   Bot, 
-  Sparkles 
+  Sparkles ,
+  MessageCircleDashedIcon
 } from 'lucide-react';
 
 export default function App() {
   const [messages, setMessages] = useState([
-    { id: 1, text: "Hello! I’m your AI assistant. Ask me anything about the Public Works Department.", sender: 'ai', timestamp: new Date().toISOString() }
+    { id: 1, text: "नमस्कार! मी आपला AI सहाय्यक आहे. महाराष्ट्र शासनाच्या विधिमंडळ अधिवेशन, दूरध्वनी सेवा व व्यवस्थेसंबंधी कोणतीही माहिती तुम्ही मला विचारू शकता.", sender: 'ai', timestamp: new Date().toISOString() }
   ]);
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -54,8 +55,8 @@ export default function App() {
           // 'Authorization': 'Bearer YOUR_API_KEY_HERE' // Uncomment if you need auth
         },
         body: JSON.stringify({ 
-          message: userMessageText,
-          sessionId: sessionId.current // Sending the unique session ID
+          query: userMessageText,
+          user_id: sessionId.current // Sending the unique session ID
         }),
       });
 
@@ -67,7 +68,7 @@ export default function App() {
       
       // 2. ADJUST this to match your backend's response structure
       // Example: if your backend returns { "reply": "Hello" }, use data.reply
-      const aiResponseText = data.reply || data.message || data.text || "I received the message but got no text back.";
+      const aiResponseText = data.answer || data.message || data.text || "I received the message but got no text back.";
 
       const newAiMessage = {
         id: Date.now() + 1,
@@ -82,7 +83,7 @@ export default function App() {
       
       const errorMessage = {
         id: Date.now() + 1,
-        text: "Sorry, I'm having trouble connecting to the server. Please try again.",
+        text: "Sorry, I'm having trouble connecting to the server. Please try again.\nमाफ करा, सर्व्हरशी जोडणी करण्यात अडचण येत आहे. कृपया पुन्हा प्रयत्न करा.",
         sender: 'ai',
         timestamp: new Date().toISOString()
       };
@@ -103,11 +104,11 @@ export default function App() {
       <header className="bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between sticky top-0 z-10 shadow-sm">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-md">
-            <Sparkles size={20} />
+            <MessageCircleDashedIcon size={20} />
           </div>
           <div>
             <h1 className="font-bold text-lg text-slate-800 flex items-center gap-2">
-              Public Work Department AI BoT
+              महाराष्ट्र शासन विधिमंडळ अधिवेशन दूरध्वनी व व्यवस्थेसंबंधी माहिती
             </h1>
           </div>
         </div>
@@ -209,7 +210,7 @@ export default function App() {
               <Send size={20} className={inputText.trim() && !isTyping ? 'ml-0.5' : ''} />
             </button>
           </form>
-          <p className="text-center text-[10px] sm:text-xs text-slate-400 mt-2">
+          <p className="text-center text-[10px] sm:text-xs text-slate-600 mt-2">
             AI can make mistakes. Consider checking important information.
           </p>
         </div>
