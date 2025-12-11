@@ -6,6 +6,12 @@ import {
   Sparkles ,
   MessageCircleDashedIcon
 } from 'lucide-react';
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import hljs from "highlight.js";
+import "highlight.js/styles/github.css";
+
 
 export default function App() {
   const [messages, setMessages] = useState([
@@ -108,7 +114,7 @@ export default function App() {
           </div>
           <div>
             <h1 className="font-bold text-lg text-slate-800 flex items-center gap-2">
-              महाराष्ट्र शासन विधिमंडळ अधिवेशन दूरध्वनी व व्यवस्थेसंबंधी माहिती
+              🇮🇳 Vidhan Bhavan Directory 2025 Assistant | महाराष्ट्र शासन विधिमंडळ अधिवेशन २०२५ दूरध्वनी व व्यवस्थेसंबंधी माहिती
             </h1>
           </div>
         </div>
@@ -149,12 +155,47 @@ export default function App() {
                       : 'bg-white text-slate-800 border border-slate-100 rounded-tl-none'
                   }`}
                 >
-                  {msg.text}
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[rehypeRaw]}
+                    components={{
+                      code({ inline, className, children }) {
+                        const language = className?.replace("language-", "");
+                        const code = children.join("");
+                        return !inline ? (
+                          <pre className="overflow-x-auto">
+                            <code
+                              dangerouslySetInnerHTML={{
+                                __html: language
+                                  ? hljs.highlight(code, { language }).value
+                                  : hljs.highlightAuto(code).value
+                              }}
+                            />
+                          </pre>
+                        ) : (
+                          <code className="bg-slate-200 rounded px-1 py-[2px]">{code}</code>
+                        );
+                      },
+                      table({ children }) {
+                        return <table className="border border-slate-200">{children}</table>;
+                      },
+                      th({ children }) {
+                        return <th className="border border-slate-200 px-2 py-1 bg-slate-100">{children}</th>;
+                      },
+                      td({ children }) {
+                        return <td className="border border-slate-200 px-2 py-1">{children}</td>;
+                      },
+                    }}
+                  >
+                    {msg.text}
+                  </ReactMarkdown>
                 </div>
                 <span className="text-[10px] sm:text-xs text-slate-400 mt-1 px-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   {formatTime(msg.timestamp)}
                 </span>
               </div>
+
+
             </div>
           ))}
 
