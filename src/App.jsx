@@ -118,6 +118,15 @@ export default function App() {
             </h1>
           </div>
         </div>
+        {/* Download Directory Button */}
+        <a
+          href="https://drive.google.com/file/d/1rXNIPOpgDS0Zi3pHfXY2PEtu1Cdpkh5R/view?usp=drivesdk"
+          className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-all"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Download Directory
+        </a>
       </header>
 
       {/* Main Chat Area */}
